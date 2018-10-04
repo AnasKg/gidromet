@@ -1,0 +1,46 @@
+{% extends "main/base.html" %}
+
+{% block body %}
+
+{% load custom_tags%}
+<center><h2>Каракол 2018</h2></center>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      {% for m in month%}
+          <th colspan="2"><center>{{m}}</center></th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in days %}
+        <tr>
+          <th scope="row"><center>{{d}}</center></th>
+          {% for m in month %}
+              {% update_variable 0%}
+                {% for os in osadki%}
+                    {% with day=os.date|date:'j' mon=os.date|date:'n' dayDay=d|stringformat:'s' mMonth=m|stringformat:'s' get=get_variable|stringformat:'s'%}
+                        {% ifequal dayDay day%}
+                            {% ifequal mMonth mon%}
+                              {%update_variable 1%}
+                              <td><center>{{os.otschot}}</center></td>
+                              <td><center>{{os.popravka}}</center></td>
+                            {% endifequal%}
+                        {% endifequal%}      
+                   {% endwith%}
+                {% endfor %}   
+                {% if get_variable == get_false %}
+                    <td><center>  </center></td>
+                    <td><center>  </center></td>
+                {% endif %}
+          {% endfor %}
+        </tr>
+    {% endfor %}
+   
+  </tbody>
+</table>
+ 
+
+ 
+{% endblock %}

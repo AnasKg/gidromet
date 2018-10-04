@@ -1,0 +1,64 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      {% for m in month%}
+          <th colspan="2"><center>{{m}}</center></th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in days %}
+        <tr>
+          <th scope="row"><center>{{d}}</center></th>
+          {% for m in month %}
+              {% with False as f%}
+                  {% for os in osadki %}
+                    {% with day=os.date|date:'j' mon=os.date|date:'n' dayDay=d|stringformat:'s' mMonth=m|stringformat:'s'%}
+                        {% ifequal dayDay day%}
+                            {% ifequal mMonth mon%}
+                              {%update_variable True as f%}
+                              <td><center>{{os.otschot}}{{f}}</center></td>
+                              <td><center>{{os.popravka}}</center></td>
+                            {% endifequal%}
+                        {% endifequal%}
+                   {% endwith%}
+                  {% endfor %}
+                {% ifequal False f %}
+                    <td><center> {{f}}- </center></td>
+                    <td><center> - </center></td>
+                {% endifequal %}
+              {% endwith %}
+          {% endfor %}
+        </tr>
+    {% endfor %}
+   
+  </tbody>
+</table>
+ 
+
+
+ <h1>{%get_variable%}</h1>
+{% for m in month %}
+    <h2>{% update_variable False%}</h2>
+    <h3>{{m}}</h3>
+    <h1>{%get_variable%}</h1>
+  {% for os in osadki %}
+    {% with mm=m|stringformat:'s' dd=os.date|date:'n' %}
+      {% ifequal mm dd %}
+        {% update_variable 1%}
+          <p>{{dd}} {% get_variable %}</p>
+      {% endifequal%}
+          <a href="">{% get_variable%}</a>
+          <a href="">{% get_false%}</a>
+      {% ifequal get_variable get_false%}
+          <p>NO</p>
+      {% else %}
+          <p>YEEEE</p>
+      {% endifequal%}
+
+          <a href="">{% get_variable%}</a>
+          <a href="">{% get_false%}</a>
+    {% endwith %}            
+  {% endfor %}
+{% endfor %}
